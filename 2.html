@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC ！>
+<html>
+  <head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link type="text/css" href="themes/css/v3/reset.css" rel="stylesheet">
+<link type="text/css" href="themes/css/v3/public.css" rel="stylesheet">
+<link type="text/css" href="themes/css/v3/register.css" rel="stylesheet">
+<link rel="shortcut icon" href="favicon.ico" />
+    <style type="javaScript">
+       tr{
+         text-align:center;
+       }
+    </style>
+   
+    <script type="text/javascript">
+       
+       var optionFlag = "save";
+       var updateRowIndex = -1;
+       var checkFlag=false;
+       function show() {
+         optionFlag = "save";
+         var f = document.getElementById("did");
+           if(!checkFlag) {
+              f.style.visibility="visible";
+           }else{
+              f.style.visibility="hidden";
+           }
+           checkFlag=!checkFlag;
+       }
+      
+       
+       function insertRow_() {
+         switch(optionFlag) {
+            case "save" :
+               insertRow_$save();
+               break;
+            case "update" :
+               insertRow_$update();
+               break;
+            default :
+               alert("操作失败！！"); 
+         }
+        
+         function insertRow_$save() {
+            
+          var table = document.getElementById("tableid");
+         
+         
+          var titleName = document.getElementById("title").value;
+          var digestName = document.getElementById("digest").value;
+          var authorName = document.getElementById("author").value;
+          
+          var selectIndex_ = document.getElementById("select");
+          var option = selectIndex_.options[selectIndex_.selectedIndex];
+          var selectName = option.text;
+         
+         
+          var numberid = table.rows.length;
+         
+          
+          var row_ = table.insertRow(table.rows.length);
+ 
+          row_.insertCell(0).innerHTML = numberid;
+          row_.insertCell(1).innerHTML = titleName;
+          row_.insertCell(2).innerHTML = digestName;
+          row_.insertCell(3).innerHTML = authorName;
+          row_.insertCell(4).innerHTML = selectName;
+          row_.insertCell(5).innerHTML = '<input type="button" value="修改" onclick="update_(this.parentNode.parentNode)"></input>&nbsp;<input type="button" value="删除" onclick="delete_(this.parentNode.parentNode)"></input>';
+         
+          document.getElementById("title").value = "";
+          document.getElementById("digest").value = "";
+          document.getElementById("author").value = "";
+          document.getElementById("select").options[0].selected="true";
+         
+          var f = document.getElementById("did");
+          f.style.visibility="hidden";
+         
+          alert("insert数据成功！！");
+         }
+         
+         var tr;
+         function insertRow_$update() {
+             var table = document.getElementById("tableid");
+             tr = table.rows[updateRowIndex];
+            
+             var p = document.getElementById("title");
+             tr.cells[1].innerHTML = p.value;
+            
+             p = document.getElementById("digest");
+             tr.cells[2].innerHTML = p.value;
+            
+             p = document.getElementById("author");
+             tr.cells[3].innerHTML = p.value;
+            
+             p = document.getElementById("select");
+             var Index_ = p.selectedIndex;
+             var option = p.options[Index_];
+             var selectName = option.text;
+             tr.cells[4].innerHTML = selectName;
+            
+             document.getElementById("title").value = "";
+          document.getElementById("digest").value = "";
+          document.getElementById("author").value = "";
+          document.getElementById("select").options[0].selected="true";
+            
+             var f = document.getElementById("did");
+             f.style.visibility="hidden";
+            
+             alert("update数据成功！！");
+         }
+       }
+      
+       
+       function delete_(row_) {
+         var table = document.getElementById("tableid");
+         table.deleteRow(row_.rowIndex);
+        
+         refurbish_();
+         alert("delete数据成功！！");
+       }
+      
+       
+       function refurbish_() {
+         var table = document.getElementById("tableid");
+         
+         var rows = table.rows;
+         for(var i=1;i<rows.length;i++) {
+           rows[i].cells[0].innerHTML = i;
+         }
+       }
+      
+       
+       function update_(row) {
+         updateRowIndex = row.rowIndex;
+         optionFlag = "update";
+         
+         document.getElementById("title").value = row.cells[1].innerHTML;
+         document.getElementById("digest").value = row.cells[2].innerHTML;
+         document.getElementById("author").value = row.cells[3].innerHTML;
+         var selectText = row.cells[4].innerHTML;
+         var sel = document.getElementById("select");
+         var ops = sel.options;
+         for(var i=0;i<ops.length;i++) {
+            if(selectText==ops[i].text) {
+               sel.options[i].selected = "true"; 
+            }
+         }
+         var f = document.getElementById("did");
+         f.style.visibility="visible";
+       }
+    </script>
+  </head>
+ 
+  <body>
+    <div  style="width:100%;height:300px;background:url(1.png)">
+      <h1>图书管理系统</h1>
+    </div>
+    
+    <div>
+      <table border = "1" cellspacing = "0" id="tableid"  width="90%">
+         <tr bgcolor="yellow">
+            <th>编号</th>
+            <th>书名</th>
+            <th>作者</th>
+            <th>价钱</th>
+            <th>类别</th>
+            <th>操作</th>
+         </tr>
+         <tr>
+            <td>1</td>
+            <td>钢铁是怎样炼成的</td>
+            <td>奥斯特洛夫斯基</td>
+            <td>43.9</td>
+            <td>其他</td>
+            <td>
+               <input type="button" value="修改" onclick="update_(this.parentNode.parentNode)"></input>
+               <input type="button" value="删除" onclick="delete_(this.parentNode.parentNode)"></input>
+            </td>
+         </tr>
+     </table>
+    </div>
+    <input type="button" value="新增" onclick="show()"></input>
+ <br>
+    <div align="center" id="did" style="visibility:hidden" >
+       <form action="">
+         <table>
+          <tr>
+      <td>书名：</td>
+      <td><input type="text" id="title"></input></td>
+      <td>作者：</td>
+      <td><input type="text" id="digest"></input></td>
+    </tr>
+  
+    <tr>
+      <td>价钱：</td>
+      <td><input type="text" id="author"></input></td>
+      <td>类别：</td>
+      <td align="left">
+       <select id="select">
+          <option>教育</option>
+          <option>财经</option>
+          <option>历史</option>
+          <option>地理</option>
+          <option>人物传记</option>
+          <option>其他</option>
+       </select>
+      </td>
+    </tr>
+   </table>
+   <br>  
+      <center>
+         <input type="button" value="保存" onclick="insertRow_()"></input>
+         <input type="reset" value="重置"></input>
+      </center>
+      </form>
+   </div>
+   <div id="footer" class="clear">
+    
+      <div class="friendLink clear">
+          <a  href="#" target="_blank" title="隐私政策" rel="nofollow">隐私政策</a>
+          <a href="#" target="_blank" rel="nofollow">服务条款</a>
+          <a href="#" target="_blank" rel="nofollow">关于我们</a>
+          
+          <a href="#" target="_blank" rel="nofollow">联系我们</a>
+          <a href="#" target="_blank" rel="nofollow">友情链接</a>
+      </div>
+      
+      <div class="weixin">
+          <img src="themes/images/v3/weiyi_qr.png" alt="" />
+          <h3>关注微信</h3>
+      </div>
+  </div>
+ </body>
+</html>
